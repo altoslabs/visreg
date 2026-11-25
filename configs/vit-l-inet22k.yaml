@@ -1,0 +1,58 @@
+# Training configuration for ViT-L/14 on ImageNet-22k (the released visreg-vit-l-inet22k run)
+# Build the tarball index once first: python tools/prepare_imagenet22k.py --root <imagenet22k-dir>
+
+defaults:
+  - loss: visreg
+  - _self_
+
+# Dataset
+dataset: imagenet22k
+dataset_args:
+  root: ./data/imagenet22k            # per-class <wnid>.tar files
+  extra: ./data/imagenet22k/indices   # entries.npy + class-ids.npy
+  mmap_cache_size: 16
+run_validation: false                 # ImageNet-22k has no validation split
+
+# Model
+model: vit_l
+pretrained: false
+proj_gelu: true
+proj_dim: 384  # Default: embed_dim // 3 = 341
+
+# Loss
+lamb: 0.8
+
+aug:
+  backend: torchvision
+  cj_brightness: 0.4
+  cj_contrast: 0.4
+  cj_saturation: 0.2
+  cj_hue: 0.1
+
+# Data
+n_global: 2
+n_local: 8
+global_img_size: 224
+local_img_size: 98
+
+# DataLoader
+num_workers: 12
+prefetch_factor: 6
+
+# Training
+bs: 64 # per GPU
+lr: 8e-4
+epochs: 100
+warmup_epochs: 5
+final_lr_div: 1000
+clip_grad_norm: 10
+
+# Checkpointing
+save_ckpt: true
+ckpt_dir: ./checkpoints
+
+# Resume (set to checkpoint path to resume)
+resume: null
+
+# Wandb (set to run ID to resume logging)
+wandb_id: null

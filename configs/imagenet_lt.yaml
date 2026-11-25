@@ -1,0 +1,35 @@
+# Training configuration for SSL on ImageNet-LT (train_imagenet_lt.py)
+# Reported result: 8 GPUs x bs 32, best overall top-1 over training.
+
+defaults:
+  - loss: visreg
+  - _self_
+
+# Dataset (build once: uv run python datasets/build_imagenet_lt_hf_dataset.py)
+data_dir: ./data/imagenets/imagenet_lt_hf   # holds train/ written by the build script
+cache_dir: ./data/imagenets                 # HF cache for the ImageNet-1k validation split
+
+# Model: ViT-S/8 (512-d embedding) defined in train_imagenet_lt.py
+proj_dim: 256
+
+# Loss: VISReg weighting of the reported ImageNet-LT result. These keys belong to VISReg; when
+# switching to a baseline drop them: loss=vicreg '~loss.scale_weight' '~loss.shape_weight' '~loss.center_weight'
+lamb: 0.6
+loss:
+  scale_weight: 0.5
+  shape_weight: 2.0
+  center_weight: 0.5
+
+# Views: V independently augmented views. Set n_global and n_local to use DINO multi-crop instead.
+V: 4
+n_global: null
+n_local: null
+global_img_size: 128
+local_img_size: 64
+
+# Training
+bs: 32  # per GPU
+lr: 1e-3
+epochs: 400
+warmup_epochs: 5
+eval_last_only: false

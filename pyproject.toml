@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "visreg"
+version = "0.0.1"
+dependencies = [
+  "torch>=2.8,<2.9",
+  "numpy",
+  "accelerate<2.0.0,>=1.2.1",
+  "wandb",
+  "timm",
+  "kornia",
+  "hydra-core",
+  "datasets<4.0.0",
+  "matplotlib>=3.10.8",
+  "medmnist>=3.0.2",
+  "huggingface_hub",
+  "scipy",
+  "scikit-learn",
+  "torchvision",
+  "tqdm",
+  "pillow",
+]
+requires-python = "==3.12.*"
+authors = [
+  {name = "Haiyu Wu", email = "hwu@altoslabs.com"},
+]
+maintainers = [
+  {name = "Haiyu Wu", email = "hwu@altoslabs.com"}
+]
+description = "Variance-Invariance-Sketching Regularization for JEPA training"
+readme = "README.md"
+license = "LicenseRef-Academic-Research-Non-Commercial"
+license-files = ["LICENSE.md"]
+classifiers = [
+  "Programming Language :: Python"
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["visreg*", "downstream*"]
+
+[project.urls]
+Repository = "https://github.com/altoslabs/visreg"
+"Bug Tracker" = "https://github.com/altoslabs/visreg/issues"
